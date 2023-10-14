@@ -9,10 +9,13 @@ public class IntListExercises {
      * @param lst IntList from Lecture
      */
     public static void addConstant(IntList lst, int c) {
+        /** bug 1 use dummy to solve*/
+        IntList dummy = new IntList(1, lst);
         IntList head = lst;
-        while (head.rest != null) {
+        while (dummy.rest != null) {
             head.first += c;
             head = head.rest;
+            dummy = dummy.rest;
         }
     }
 
@@ -26,7 +29,9 @@ public class IntListExercises {
     public static void setToZeroIfMaxFEL(IntList L) {
         IntList p = L;
         while (p != null) {
-            if (firstDigitEqualsLastDigit(max(p))) {
+            int currentMax = max(p);
+            boolean firstEqualsLast = firstDigitEqualsLastDigit(currentMax);
+            if (firstEqualsLast) {
                 p.first = 0;
             }
             p = p.rest;
@@ -51,11 +56,14 @@ public class IntListExercises {
      */
     public static boolean firstDigitEqualsLastDigit(int x) {
         int lastDigit = x % 10;
-        while (x > 10) {
+        /** bug >= */
+        while (x >= 10) {
             x = x / 10;
         }
         int firstDigit = x % 10;
         return firstDigit == lastDigit;
+
+
     }
 
     /**
@@ -65,18 +73,45 @@ public class IntListExercises {
      * @param lst IntList from Lecture
      * @return True if there was an update to the list
      */
+
     public static boolean squarePrimes(IntList lst) {
-        // Base Case: we have reached the end of the list
-        if (lst == null) {
-            return false;
+        IntList dummy = new IntList(0, lst);
+        IntList p = lst;
+
+
+        int arr[] = new int[lst.size()];
+        for (int i = 0; i < lst.size(); i++) {
+            arr[i] = lst.get(i);
         }
+        IntList prev = IntList.of(arr);
 
-        boolean currElemIsPrime = Primes.isPrime(lst.first);
+        /** bug: no while loop to do iteration
+         * solution 1:
+         *  we can make a comparison
+         *  if the new lst is not equal to the previous one
+         *  then return true, that means changed = true
+         *
+         *  do a iteration , get all lst value to a int array
+         *  and then use "of(x, x, x)"method to create prev
+         * */
+        while(dummy.rest != null) {
+            // Base Case: we have reached the end of the list
+            if (lst == null) {
+                return false;
+            }
 
-        if (currElemIsPrime) {
-            lst.first *= lst.first;
+            boolean currElemIsPrime = Primes.isPrime(p.first);
+
+            if (currElemIsPrime) {
+                p.first *= p.first;
+            }
+            p = p.rest;
+            dummy = dummy.rest;
         }
+        if (prev.rest != lst) {
+            return true;
+        } return false;
 
-        return currElemIsPrime || squarePrimes(lst.rest);
     }
 }
+
