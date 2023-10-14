@@ -41,4 +41,12 @@ public class SquarePrimesTest {
         assertEquals("0", lst.toString());
         assertTrue(changed);
     }
+
+    @Test
+    public void testSquarePrimesSimple4() {
+        IntList lst = null;
+        boolean changed = IntListExercises.squarePrimes(lst);
+        assertNull(lst);
+        assertFalse(changed);
+    }
 }

@@ -75,14 +75,17 @@ public class IntListExercises {
      */
 
     public static boolean squarePrimes(IntList lst) {
+        if (lst == null) {
+            return false;
+        }
         IntList dummy = new IntList(0, lst);
         IntList p = lst;
-
-
         int arr[] = new int[lst.size()];
+
         for (int i = 0; i < lst.size(); i++) {
             arr[i] = lst.get(i);
         }
+
         IntList prev = IntList.of(arr);
 
         /** bug: no while loop to do iteration
@@ -105,13 +108,13 @@ public class IntListExercises {
             if (currElemIsPrime) {
                 p.first *= p.first;
             }
+
             p = p.rest;
             dummy = dummy.rest;
         }
         if (prev.rest != lst) {
             return true;
         } return false;
-
     }
 }
 
