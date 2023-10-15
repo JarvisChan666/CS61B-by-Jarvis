@@ -135,9 +135,16 @@ public class Model extends Observable {
 
     /** Returns true if at least one space on the Board is empty.
      *  Empty spaces are stored as null.
+     *  Only use "tile() and size() methods in Board class"
+     *  if b.tile (i, j) has a 0, then return true
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                if (b.tile(i, j) == null)
+                    return true;
+            }
+        }
         return false;
     }
 
@@ -156,10 +163,46 @@ public class Model extends Observable {
      * There are two ways that there can be valid moves:
      * 1. There is at least one empty space on the board.
      * 2. There are two adjacent tiles with the same value.
+     * 3. We can use
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
-        return false;
+        // 1. if at least one empty space exist, then return true
+        // 2. write a function to try all the move/same value adjacent, if can, return true
+        //we can't move two that are not adjacent
+
+        if (emptySpaceExists(b))
+            return true;
+            // if two adjacent not the same, if you use move it will bug error
+            // so we need to use tile.value to compare two value
+        else {
+
+            for (int i= 0; i < b.size(); i++) { //col
+                for (int j= 0; j < b.size(); j++) {
+                    //row
+                    // need to compare next col and next row, if row==3, reloop
+                    // how to compare tile(i + 1, j) and tile(i, j+ 1)
+                    if ((i == b.size() - 1 && j == b.size() - 1))
+                        return false;
+                    if (i == b.size() - 1)
+                        if (b.tile(i, j).value() == b.tile(i, j + 1).value())
+                            return true;
+                    if (j == b.size() - 1) { // the last row compare with right handside
+                        if (b.tile(i, j).value() == b.tile(i + 1, j).value())
+                            return true;
+                        else
+                            continue;
+                    }
+                    if (i < b.size() - 1)
+                        if ((b.tile(i, j).value() == b.tile(i + 1, j).value() ||
+                                b.tile(i, j).value() == b.tile(i, j + 1).value()))
+                            return true;
+
+            }
+            }
+            //if the last one is iterated, then return false
+            return false;
+        }
     }
 
 

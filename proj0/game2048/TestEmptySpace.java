@@ -34,12 +34,12 @@ public class TestEmptySpace {
         int[][] rawVals = new int[][] {
                 {0, 0, 0, 0},
                 {2, 4, 2, 4},
-                {4, 2, 4, 2},
+                {1, 2, 3, 4},
                 {2, 4, 2, 4},
         };
-
+        System.out.println(rawVals[1][0]);
         b = new Board(rawVals, 0);
-
+        System.out.println(b.tile(1, 0));
         assertTrue("Top row is empty\n" + b, Model.emptySpaceExists(b));
     }
 
@@ -47,9 +47,9 @@ public class TestEmptySpace {
     /** Tests a board that is completely full except for the bottom row. */
     public void testEmptyBottomRow() {
         int[][] rawVals = new int[][] {
-                {2, 4, 2, 4},
-                {4, 2, 4, 2},
-                {2, 4, 2, 4},
+                {3, 6, 2, 4},
+                {2, 5, 4, 2},
+                {1, 4, 2, 4},
                 {0, 0, 0, 0},
         };
 
