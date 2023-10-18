@@ -117,16 +117,21 @@ public class Model extends Observable {
   int where = 0;
 
   public Tile findTheNearest(Tile t) {
-
-    for (int i = t.row() + 1; i <= 3; i++) {
-      Tile t1 = board.tile(t.col(), i);
-      if (t1 != null)
-        return board.tile(t.col(), i);
+    where = 0;
+    for (int i = row + 1; i <= 3; i++) {
+      Tile t1 = board.tile(col, i);
+      if (t1 != null) {
+        nearestCol = col;
+        nearestRow = i;
+        return board.tile(col, i);
+      }
       //where means how many zero in front of me
       where++;//
     }
     return null;//if return null that mean front is all 0
   }
+  public int col , row;
+  public int nearestCol, nearestRow;
   public boolean tilt(Side side) {
 
     boolean changed;
@@ -139,7 +144,7 @@ public class Model extends Observable {
 
     // write the up direction first
     // start from row 3 the top, col 0
-    this.board.setViewingPerspective(side);
+    board.setViewingPerspective(side);
 
     //helper methods: find the nearest
     //find the nearest null tile and return
@@ -150,6 +155,8 @@ public class Model extends Observable {
       boolean isMerged = false;
       for (int i = 2; i >= 0; i--) {
         Tile t = board.tile(j, i);
+        col = j;
+        row = i;
         //
         // the 3 row won't change
         // each "not null" tile compare value with front "not null" tile's value
@@ -177,8 +184,8 @@ public class Model extends Observable {
             // if this is the first tile in a col
             //now the problem is how to find the nearest not null tile
           if(nearest.value() == t.value() && where <= 2 && isMerged == false) {
-            board.move(j, nearest.row(), t);
-            score += board.tile(j, nearest.row()).value();
+            board.move(j, nearestRow, t);
+            score += board.tile(j, nearestRow).value();
             changed = true;
             isMerged = true;
             // 2/2/4/4 -> /4/8/0/0
@@ -187,11 +194,15 @@ public class Model extends Observable {
             // 2/2/0/4
             // check t.row - 1  if same as score the pass one
             // will t change if merged
-            Tile tNext = board.tile(j, i - 1);
+
+            Tile tNext = null;
+            if (i > 0)
+              tNext = board.tile(j, i - 1);
             if(tNext != null)
               if (score == tNext.value()) {
                 //just move it, and definitely the third one will move to row 2
                 board.move(j, 2, tNext);
+
               }
             continue;
           }
@@ -199,7 +210,9 @@ public class Model extends Observable {
           //  eg: /2/2/4/4 -> /4/
           //when you successfully merged, you can't merged again
           // not zero and not the same
-          board.move(j, nearest.row() - 1, t);
+          if(i == 1)
+            isMerged = false;
+          board.move(j, nearestRow - 1, t);
           changed = true;
 //          for (int k = i; k >=0; k--) {
 //            Tile t1 = board.tile(j, k);
@@ -214,7 +227,7 @@ public class Model extends Observable {
         }
       }
     }
-
+    board.setViewingPerspective(Side.NORTH);
     checkGameOver();
 
     if (changed) {
