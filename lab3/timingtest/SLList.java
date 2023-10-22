@@ -35,10 +35,14 @@ public class SLList<Item> {
 		size = size + 1;
 	}
 
+
+
 	/** Returns the first item in the list. */
 	public Item getFirst() {
 		return sentinel.next.item;
 	}
+
+
 
 	/** Adds x to the end of the list. */
 	public void addLast(Item x) {
@@ -65,6 +69,8 @@ public class SLList<Item> {
 
 		return p.item;
 	}
+
+
 
 
 	/** Returns the size of the list. */
