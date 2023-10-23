@@ -2,7 +2,11 @@ package gh2;
 import edu.princeton.cs.algs4.StdAudio;
 import edu.princeton.cs.algs4.StdDraw;
 
-/**
+/**学习专区|tech
+ 当前为离线状态
+
+ 0 / 0
+
  * A client that uses the synthesizer package to replicate a plucked guitar string sound
  */
 public class GuitarHeroLite {
